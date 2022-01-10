@@ -171,7 +171,6 @@ void ImGUI::CreatePipeline(VkRenderPass iRenderPass)
 
     // Vertex bindings an attributes based on ImGui vertex definition
     std::vector<VkVertexInputBindingDescription> vertexInputBindings(1);
-    VkVertexInputBindingDescription vInputBindDescription{};
     vertexInputBindings[0].binding = 0;
     vertexInputBindings[0].stride = sizeof(ImDrawVert);
     vertexInputBindings[0].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
@@ -274,8 +273,8 @@ void ImGUI::Update()
     }
 
     // Upload data
-    ImDrawVert *vtxDst = (ImDrawVert *)m_VertexBuffer.Mapped;
-    ImDrawIdx *idxDst = (ImDrawIdx *)m_IndexBuffer.Mapped;
+    ImDrawVert *vtxDst = static_cast<ImDrawVert *>(m_VertexBuffer.Mapped);
+    ImDrawIdx *idxDst = static_cast<ImDrawIdx *>(m_IndexBuffer.Mapped);
 
     for (int n = 0; n < imDrawData->CmdListsCount; n++)
     {
@@ -331,10 +330,10 @@ void ImGUI::Draw(VkCommandBuffer commandBuffer)
             {
                 const ImDrawCmd *pcmd = &cmd_list->CmdBuffer[j];
                 VkRect2D scissorRect;
-                scissorRect.offset.x = std::max((int32_t)(pcmd->ClipRect.x), 0);
-                scissorRect.offset.y = std::max((int32_t)(pcmd->ClipRect.y), 0);
-                scissorRect.extent.width = (uint32_t)(pcmd->ClipRect.z - pcmd->ClipRect.x);
-                scissorRect.extent.height = (uint32_t)(pcmd->ClipRect.w - pcmd->ClipRect.y);
+                scissorRect.offset.x = std::max(static_cast<int32_t>(pcmd->ClipRect.x), 0);
+                scissorRect.offset.y = std::max(static_cast<int32_t>(pcmd->ClipRect.y), 0);
+                scissorRect.extent.width = static_cast<int32_t>(pcmd->ClipRect.z - pcmd->ClipRect.x);
+                scissorRect.extent.height = static_cast<int32_t>(pcmd->ClipRect.w - pcmd->ClipRect.y);
                 vkCmdSetScissor(commandBuffer, 0, 1, &scissorRect);
                 vkCmdDrawIndexed(commandBuffer, pcmd->ElemCount, 1, indexOffset, vertexOffset, 0);
                 indexOffset += pcmd->ElemCount;

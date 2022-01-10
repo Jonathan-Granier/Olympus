@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(Olympus VERSION 1.0.0)
+project(Olympus)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 add_library(Olympus OBJECT)
 
 target_compile_features(Olympus PRIVATE cxx_std_17)
+
+############################
+# Olympus - Compiler flags #
+############################ 
+
+include(CompilerFlags)
+add_compiler_flags(Olympus PRIVATE)
 
 
 #############################
