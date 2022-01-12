@@ -27,10 +27,9 @@ public:
 
     ///  Create the framebuffers used by the swapchain.
     /// @param[in] iRenderPass Render pass to attache to the framebuffers.
-    /// @param[in] iDepthImageView Depth attachment used by the render pass.
-    void CreateFrameBuffers(VkRenderPass iRenderPass, VkImageView iDepthImageView);
+    /// @param[in] iImageView Image attachment used by the render pass (like depth map).
+    void CreateFrameBuffers(VkRenderPass iRenderPass, const std::vector<VkImageView> &iImageView);
 
-    /// @brief
     ///  Get the next image to draw.
     /// @param[in] iImageAvailableSemaphore Semaphore to signal when the next image is get.
     /// @param[in] oImageIndex Index of the next image.

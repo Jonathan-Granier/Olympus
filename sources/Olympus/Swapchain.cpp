@@ -209,13 +209,14 @@ void Swapchain::CreateImageViews()
     }
 }
 //----------------------------------------------------------------------------------------------------------------------
-void Swapchain::CreateFrameBuffers(VkRenderPass iRenderPass, VkImageView iDepthImageView)
+void Swapchain::CreateFrameBuffers(VkRenderPass iRenderPass, const std::vector<VkImageView> &iImageView)
 {
     m_Framebuffers.resize(m_Images.size());
 
     for (size_t i = 0; i < m_Framebuffers.size(); i++)
     {
-        std::array<VkImageView, 2> attachments = {m_ImageViews[i], iDepthImageView};
+        std::vector<VkImageView> attachments = {m_ImageViews[i]};
+        attachments.insert(attachments.end(), iImageView.begin(), iImageView.end());
         VkFramebufferCreateInfo framebufferInfo{};
         framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
         framebufferInfo.renderPass = iRenderPass;
